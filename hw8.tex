@@ -1,0 +1,538 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={hw8},
+  pdfauthor={Camille Okonkwo},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{hw8}
+\author{Camille Okonkwo}
+\date{2024-04-06}
+
+\begin{document}
+\maketitle
+
+\hypertarget{import-data-and-preparation}{%
+\section{Import Data and
+Preparation}\label{import-data-and-preparation}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{hwdata4 }\OtherTok{=} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{"data/hwdata4.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Rows: 632 Columns: 4
+## -- Column specification --------------------------------------------------------
+## Delimiter: ","
+## chr (1): treat
+## dbl (3): size, time, tree
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# data prep}
+\NormalTok{hwdata4}\SpecialCharTok{$}\NormalTok{treat }\OtherTok{=} \FunctionTok{as.factor}\NormalTok{(hwdata4}\SpecialCharTok{$}\NormalTok{treat)}
+\NormalTok{hwdata4}\SpecialCharTok{$}\NormalTok{tree }\OtherTok{=} \FunctionTok{as.factor}\NormalTok{(hwdata4}\SpecialCharTok{$}\NormalTok{tree)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Fit a GEE model with size of the tree as outcome and time,
+  environment, and their interaction as covariates. Write down the mean
+  response of the GEE model.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# fit the model}
+\FunctionTok{library}\NormalTok{(gee)}
+
+\NormalTok{fit\_1 }\OtherTok{=} 
+  \FunctionTok{gee}\NormalTok{(size }\SpecialCharTok{\textasciitilde{}}\NormalTok{ time }\SpecialCharTok{*}\NormalTok{ treat, }
+      \AttributeTok{data =}\NormalTok{ hwdata4, }
+      \AttributeTok{id =}\NormalTok{ tree, }
+      \AttributeTok{family =}\NormalTok{ gaussian)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Beginning Cgee S-function, @(#) geeformula.q 4.13 98/01/27
+\end{verbatim}
+
+\begin{verbatim}
+## running glm to get initial regression estimate
+\end{verbatim}
+
+\begin{verbatim}
+##     (Intercept)            time      treatozone time:treatozone 
+##    5.479453e+00    3.706259e-03   -3.378012e-01   -8.026838e-05
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(fit\_1)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  GEE:  GENERALIZED LINEAR MODELS FOR DEPENDENT DATA
+##  gee S-function, version 4.13 modified 98/01/27 (1998) 
+## 
+## Model:
+##  Link:                      Identity 
+##  Variance to Mean Relation: Gaussian 
+##  Correlation Structure:     Independent 
+## 
+## Call:
+## gee(formula = size ~ time * treat, id = tree, data = hwdata4, 
+##     family = gaussian)
+## 
+## Summary of Residuals:
+##         Min          1Q      Median          3Q         Max 
+## -2.03126650 -0.35710410  0.05785154  0.43662246  1.34601233 
+## 
+## 
+## Coefficients:
+##                      Estimate   Naive S.E.     Naive z  Robust S.E.   Robust z
+## (Intercept)      5.479453e+00 0.1464323258 37.41969377 0.1403852679 39.0315371
+## time             3.706259e-03 0.0006849590  5.41092107 0.0002259020 16.4064939
+## treatozone      -3.378012e-01 0.1771142997 -1.90724969 0.1688164000 -2.0009975
+## time:treatozone -8.026838e-05 0.0008284786 -0.09688649 0.0002644467 -0.3035333
+## 
+## Estimated Scale Parameter:  0.412159
+## Number of Iterations:  1
+## 
+## Working Correlation
+##      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]
+## [1,]    1    0    0    0    0    0    0    0
+## [2,]    0    1    0    0    0    0    0    0
+## [3,]    0    0    1    0    0    0    0    0
+## [4,]    0    0    0    1    0    0    0    0
+## [5,]    0    0    0    0    1    0    0    0
+## [6,]    0    0    0    0    0    1    0    0
+## [7,]    0    0    0    0    0    0    1    0
+## [8,]    0    0    0    0    0    0    0    1
+\end{verbatim}
+
+E(y\_ij) = β\_0 + β\_1(X\_1) + β\_2(X\_2) + β\_3(X\_1)(X\_2) where
+y\_ij=size of the tree measured as log(height × diameter\^{}2)
+X\_1=treat\{(0=control and 1=ozone) X\_2=days after January 1st of the
+year
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  Try different working correlation structures (CS and AR(1)) for the
+  GEEmodel. Which model yields the better QIC value? Show the SAS/R code
+  and relevant output. {[}2 points{]} (For R users, use geepack package
+  and geeglm, geepack::QIC functions)
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(geepack)}
+
+\CommentTok{\# model with CS}
+\NormalTok{fit\_cs }\OtherTok{=}
+  \FunctionTok{geeglm}\NormalTok{(size }\SpecialCharTok{\textasciitilde{}}\NormalTok{ time }\SpecialCharTok{*}\NormalTok{ treat, }
+         \AttributeTok{data =}\NormalTok{ hwdata4, }
+         \AttributeTok{id =}\NormalTok{ tree,}
+         \AttributeTok{family =}\NormalTok{ gaussian, }
+         \AttributeTok{corstr =} \StringTok{"exchangeable"}\NormalTok{)}
+
+\FunctionTok{summary}\NormalTok{(fit\_cs)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## geeglm(formula = size ~ time * treat, family = gaussian, data = hwdata4, 
+##     id = tree, corstr = "exchangeable")
+## 
+##  Coefficients:
+##                   Estimate    Std.err     Wald Pr(>|W|)    
+## (Intercept)      5.479e+00  1.404e-01 1523.461   <2e-16 ***
+## time             3.706e-03  2.259e-04  269.173   <2e-16 ***
+## treatozone      -3.378e-01  1.688e-01    4.004   0.0454 *  
+## time:treatozone -8.027e-05  2.645e-04    0.092   0.7615    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Correlation structure = exchangeable 
+## Estimated Scale Parameters:
+## 
+##             Estimate Std.err
+## (Intercept)   0.4096   0.068
+##   Link = identity 
+## 
+## Estimated Correlation Parameters:
+##       Estimate  Std.err
+## alpha   0.9573 0.007712
+## Number of clusters:   79  Maximum cluster size: 8
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# model with AR(1)}
+\NormalTok{fit\_ar1 }\OtherTok{=}
+  \FunctionTok{geeglm}\NormalTok{(size }\SpecialCharTok{\textasciitilde{}}\NormalTok{ time }\SpecialCharTok{*}\NormalTok{ treat,}
+         \AttributeTok{data =}\NormalTok{ hwdata4,}
+         \AttributeTok{id =}\NormalTok{ tree,}
+         \AttributeTok{family =}\NormalTok{ gaussian,}
+         \AttributeTok{corstr =} \StringTok{"ar1"}\NormalTok{)}
+
+\FunctionTok{summary}\NormalTok{(fit\_ar1)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## geeglm(formula = size ~ time * treat, family = gaussian, data = hwdata4, 
+##     id = tree, corstr = "ar1")
+## 
+##  Coefficients:
+##                  Estimate   Std.err    Wald Pr(>|W|)    
+## (Intercept)      5.546989  0.142983 1505.04   <2e-16 ***
+## time             0.003031  0.000204  220.51   <2e-16 ***
+## treatozone      -0.322148  0.171361    3.53     0.06 .  
+## time:treatozone -0.000117  0.000243    0.23     0.63    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Correlation structure = ar1 
+## Estimated Scale Parameters:
+## 
+##             Estimate Std.err
+## (Intercept)    0.416  0.0681
+##   Link = identity 
+## 
+## Estimated Correlation Parameters:
+##       Estimate Std.err
+## alpha    0.985 0.00283
+## Number of clusters:   79  Maximum cluster size: 8
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# extract QIC}
+\NormalTok{geepack}\SpecialCharTok{::}\FunctionTok{QIC}\NormalTok{(fit\_cs)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##       QIC      QICu Quasi Lik       CIC    params      QICC 
+##     289.0     266.8    -129.4      15.1       4.0     289.8
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{geepack}\SpecialCharTok{::}\FunctionTok{QIC}\NormalTok{(fit\_ar1)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##       QIC      QICu Quasi Lik       CIC    params      QICC 
+##     294.1     270.8    -131.4      15.7       4.0     294.9
+\end{verbatim}
+
+The CS correlation structure for the GEE model has a lower QIC value
+(289.8) compared to the AR(1) correlation structure (294.1), thus has a
+better fit since a smaller QIC value is preferred.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  Use the model selected in (2) to test whether the trajectory of tree
+  size over time is different between the two environments. Write down
+  the hypothesis, test statistic, p-value, and conclusion.
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fit\_cs\_2 }\OtherTok{=} 
+  \FunctionTok{gee}\NormalTok{(size }\SpecialCharTok{\textasciitilde{}}\NormalTok{ time }\SpecialCharTok{*}\NormalTok{ treat, }
+      \AttributeTok{data =}\NormalTok{ hwdata4, }
+      \AttributeTok{id =}\NormalTok{ tree, }
+      \AttributeTok{family =}\NormalTok{ gaussian,}
+      \AttributeTok{corstr =} \StringTok{"exchangeable"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Beginning Cgee S-function, @(#) geeformula.q 4.13 98/01/27
+\end{verbatim}
+
+\begin{verbatim}
+## running glm to get initial regression estimate
+\end{verbatim}
+
+\begin{verbatim}
+##     (Intercept)            time      treatozone time:treatozone 
+##        5.48e+00        3.71e-03       -3.38e-01       -8.03e-05
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(fit\_cs\_2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  GEE:  GENERALIZED LINEAR MODELS FOR DEPENDENT DATA
+##  gee S-function, version 4.13 modified 98/01/27 (1998) 
+## 
+## Model:
+##  Link:                      Identity 
+##  Variance to Mean Relation: Gaussian 
+##  Correlation Structure:     Exchangeable 
+## 
+## Call:
+## gee(formula = size ~ time * treat, id = tree, data = hwdata4, 
+##     family = gaussian, corstr = "exchangeable")
+## 
+## Summary of Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -2.0313 -0.3571  0.0579  0.4366  1.3460 
+## 
+## 
+## Coefficients:
+##                  Estimate Naive S.E. Naive z Robust S.E. Robust z
+## (Intercept)      5.48e+00   0.129304  42.376    0.140385   39.032
+## time             3.71e-03   0.000149  24.944    0.000226   16.406
+## treatozone      -3.38e-01   0.156397  -2.160    0.168816   -2.001
+## time:treatozone -8.03e-05   0.000180  -0.447    0.000264   -0.304
+## 
+## Estimated Scale Parameter:  0.412
+## Number of Iterations:  1
+## 
+## Working Correlation
+##       [,1]  [,2]  [,3]  [,4]  [,5]  [,6]  [,7]  [,8]
+## [1,] 1.000 0.953 0.953 0.953 0.953 0.953 0.953 0.953
+## [2,] 0.953 1.000 0.953 0.953 0.953 0.953 0.953 0.953
+## [3,] 0.953 0.953 1.000 0.953 0.953 0.953 0.953 0.953
+## [4,] 0.953 0.953 0.953 1.000 0.953 0.953 0.953 0.953
+## [5,] 0.953 0.953 0.953 0.953 1.000 0.953 0.953 0.953
+## [6,] 0.953 0.953 0.953 0.953 0.953 1.000 0.953 0.953
+## [7,] 0.953 0.953 0.953 0.953 0.953 0.953 1.000 0.953
+## [8,] 0.953 0.953 0.953 0.953 0.953 0.953 0.953 1.000
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Wald test p{-}values}
+\DecValTok{1}\SpecialCharTok{{-}} \FunctionTok{pchisq}\NormalTok{(fit\_cs\_2}\SpecialCharTok{$}\NormalTok{coefficients}\SpecialCharTok{\^{}}\DecValTok{2}\SpecialCharTok{/}
+\FunctionTok{diag}\NormalTok{(fit\_cs\_2}\SpecialCharTok{$}\NormalTok{robust.variance),}\AttributeTok{df=}\DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##     (Intercept)            time      treatozone time:treatozone 
+##          0.0000          0.0000          0.0454          0.7615
+\end{verbatim}
+
+We fail to reject H\_0 at α=0.05. There is insufficient evidence to
+conclude that the trajectory of tree size over time is different between
+the ozone and control environments.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  Use the model selected in (2) to estimate the mean tree size change
+  from day100 to day 200 after January 1st for trees grown in ozone
+  environment and those grown in ozone-free environment, respectively
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Calculate predicted mean tree size for day 100 and day 200 separately for ozone and control environments}
+\NormalTok{day\_100\_ozone }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(fit\_cs, }\AttributeTok{newdata =} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{time =} \DecValTok{100}\NormalTok{, }\AttributeTok{treat =} \StringTok{"ozone"}\NormalTok{), }\AttributeTok{type =} \StringTok{"response"}\NormalTok{)}
+\NormalTok{day\_200\_ozone }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(fit\_cs, }\AttributeTok{newdata =} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{time =} \DecValTok{200}\NormalTok{, }\AttributeTok{treat =} \StringTok{"ozone"}\NormalTok{), }\AttributeTok{type =} \StringTok{"response"}\NormalTok{)}
+
+\NormalTok{day\_100\_control }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(fit\_cs, }\AttributeTok{newdata =} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{time =} \DecValTok{100}\NormalTok{, }\AttributeTok{treat =} \StringTok{"control"}\NormalTok{), }\AttributeTok{type =} \StringTok{"response"}\NormalTok{)}
+\NormalTok{day\_200\_control }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(fit\_cs, }\AttributeTok{newdata =} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{time =} \DecValTok{200}\NormalTok{, }\AttributeTok{treat =} \StringTok{"control"}\NormalTok{), }\AttributeTok{type =} \StringTok{"response"}\NormalTok{)}
+
+\CommentTok{\# Compute mean tree size change from day 100 to day 200 for each environment}
+\NormalTok{mean\_change\_ozone }\OtherTok{\textless{}{-}}\NormalTok{ day\_200\_ozone }\SpecialCharTok{{-}}\NormalTok{ day\_100\_ozone}
+\NormalTok{mean\_change\_control }\OtherTok{\textless{}{-}}\NormalTok{ day\_200\_control }\SpecialCharTok{{-}}\NormalTok{ day\_100\_control}
+
+\CommentTok{\# Print the estimated mean tree size change}
+\FunctionTok{print}\NormalTok{(}\StringTok{"Estimated Mean Tree Size Change from Day 100 to Day 200:"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "Estimated Mean Tree Size Change from Day 100 to Day 200:"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"Ozone Environment:"}\NormalTok{, mean\_change\_ozone))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "Ozone Environment: 0.362599095773301"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(}\FunctionTok{paste}\NormalTok{(}\StringTok{"Control Environment:"}\NormalTok{, mean\_change\_control))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "Control Environment: 0.370625933778227"
+\end{verbatim}
+
+The mean tree size change from day 100 to day 200 after January 1st for
+trees grown in ozone environment is 0.363 log(height x
+〖diameter〗\^{}2). The mean tree size change from day100 to day 200
+after January 1st for trees grown in ozone-free environment is 0.371
+log(height x 〖diameter〗\^{}2).
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{4}
+\tightlist
+\item
+  Calculate the difference of the two estimates in (4). Denote the
+  difference asDIFF. Which β coefficient is DIFF related to? Interpret
+  this β coefficient. {[}3 points{]}
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{DIFF }\OtherTok{=}\NormalTok{ mean\_change\_ozone }\SpecialCharTok{{-}}\NormalTok{ mean\_change\_control}
+\NormalTok{DIFF}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##        1 
+## -0.00803
+\end{verbatim}
+
+DIFF is related to the β coefficient interaction time*treat
+(β\_3=0.0000803). Compared to the control, trees in an ozone environment
+of 70bp have a 0.00803\% reduction in the effect of time on tree size.
+
+\end{document}

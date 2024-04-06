@@ -2,7 +2,7 @@
 title: "hw8"
 author: "Camille Okonkwo"
 date: "2024-04-06"
-output: pdf_document
+output: html_document
 ---
 
 ```{r setup, include=FALSE}
@@ -23,17 +23,101 @@ hwdata4$tree = as.factor(hwdata4$tree)
 
 1.	Fit a GEE model with size of the tree as outcome and time, environment, and their interaction as covariates. Write down the mean response of the GEE model.
 ```{r}
-# fit the model with CS correlation matrix
+# fit the model
 library(gee)
 
 fit_1 = 
   gee(size ~ time * treat, 
       data = hwdata4, 
       id = tree, 
-      family = gaussian, 
-      corstr = "exchangeable")
+      family = gaussian)
 
 summary(fit_1)
+```
+E(y_ij) = β_0 + β_1(X_1) + β_2(X_2) + β_3(X_1)(X_2)
+where
+y_ij=size of the tree measured as log(height × diameter^2)
+X_1=treat{(0=control and 1=ozone)
+X_2=days after January 1st of the year
+
+
+2.	Try different working correlation structures (CS and AR(1)) for the GEEmodel. Which model yields the better QIC value? Show the SAS/R code and relevant output. [2 points] (For R users, use geepack package and geeglm, geepack::QIC functions)
+```{r}
+library(geepack)
+
+# model with CS
+fit_cs =
+  geeglm(size ~ time * treat, 
+         data = hwdata4, 
+         id = tree,
+         family = gaussian, 
+         corstr = "exchangeable")
+
+summary(fit_cs)
+
+# model with AR(1)
+fit_ar1 =
+  geeglm(size ~ time * treat,
+         data = hwdata4,
+         id = tree,
+         family = gaussian,
+         corstr = "ar1")
+
+summary(fit_ar1)
+
+# extract QIC
+geepack::QIC(fit_cs)
+geepack::QIC(fit_ar1)
+```
+The CS correlation structure for the GEE model has a lower QIC value (289.8) compared to the AR(1) correlation structure (294.1), thus has a better fit since a smaller QIC value is preferred. 
+
+3.	Use the model selected in (2) to test whether the trajectory of tree size over time is different between the two environments. Write down the hypothesis, test statistic, p-value, and conclusion.
+```{r}
+fit_cs_2 = 
+  gee(size ~ time * treat, 
+      data = hwdata4, 
+      id = tree, 
+      family = gaussian,
+      corstr = "exchangeable")
+
+summary(fit_cs_2)
+
+# Wald test p-values
+1- pchisq(fit_cs_2$coefficients^2/
+diag(fit_cs_2$robust.variance),df=1)
 
 ```
 
+We fail to reject H_0  at α=0.05. There is insufficient evidence to conclude that the trajectory of tree size over time is different between the ozone and control environments.    
+
+
+
+
+4.	Use the model selected in (2) to estimate the mean tree size change from day100 to day 200 after January 1st for trees grown in ozone environment and those grown in ozone-free environment, respectively
+```{r}
+# Calculate predicted mean tree size for day 100 and day 200 separately for ozone and control environments
+day_100_ozone <- predict(fit_cs, newdata = data.frame(time = 100, treat = "ozone"), type = "response")
+day_200_ozone <- predict(fit_cs, newdata = data.frame(time = 200, treat = "ozone"), type = "response")
+
+day_100_control <- predict(fit_cs, newdata = data.frame(time = 100, treat = "control"), type = "response")
+day_200_control <- predict(fit_cs, newdata = data.frame(time = 200, treat = "control"), type = "response")
+
+# Compute mean tree size change from day 100 to day 200 for each environment
+mean_change_ozone <- day_200_ozone - day_100_ozone
+mean_change_control <- day_200_control - day_100_control
+
+# Print the estimated mean tree size change
+print("Estimated Mean Tree Size Change from Day 100 to Day 200:")
+print(paste("Ozone Environment:", mean_change_ozone))
+print(paste("Control Environment:", mean_change_control))
+```
+The mean tree size change from day 100 to day 200 after January 1st for trees grown in ozone environment is 0.363 log(height x 〖diameter〗^2). The mean tree size change from day100 to day 200 after January 1st for trees grown in ozone-free environment is 0.371 log(height x 〖diameter〗^2).
+
+
+5.	Calculate the difference of the two estimates in (4). Denote the difference asDIFF. Which β coefficient is DIFF related to? Interpret this β coefficient. [3 points]
+```{r}
+DIFF = mean_change_ozone - mean_change_control
+DIFF
+```
+
+DIFF is related to the β coefficient interaction time*treat (β_3=0.0000803). Compared to the control, trees in an ozone environment of 70ppb have a 0.00803% reduction in the effect of time on tree size. 

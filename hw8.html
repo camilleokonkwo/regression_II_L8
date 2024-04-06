@@ -376,20 +376,162 @@ hwdata4$tree = as.factor(hwdata4$tree)</code></pre>
 environment, and their interaction as covariates. Write down the mean
 response of the GEE model.</li>
 </ol>
-<pre class="r"><code># fit the model with CS correlation matrix
+<pre class="r"><code># fit the model
 library(gee)
 
 fit_1 = 
   gee(size ~ time * treat, 
       data = hwdata4, 
       id = tree, 
-      family = gaussian, 
-      corstr = &quot;exchangeable&quot;)</code></pre>
+      family = gaussian)</code></pre>
 <pre><code>## Beginning Cgee S-function, @(#) geeformula.q 4.13 98/01/27</code></pre>
 <pre><code>## running glm to get initial regression estimate</code></pre>
 <pre><code>##     (Intercept)            time      treatozone time:treatozone 
 ##    5.479453e+00    3.706259e-03   -3.378012e-01   -8.026838e-05</code></pre>
 <pre class="r"><code>summary(fit_1)</code></pre>
+<pre><code>## 
+##  GEE:  GENERALIZED LINEAR MODELS FOR DEPENDENT DATA
+##  gee S-function, version 4.13 modified 98/01/27 (1998) 
+## 
+## Model:
+##  Link:                      Identity 
+##  Variance to Mean Relation: Gaussian 
+##  Correlation Structure:     Independent 
+## 
+## Call:
+## gee(formula = size ~ time * treat, id = tree, data = hwdata4, 
+##     family = gaussian)
+## 
+## Summary of Residuals:
+##         Min          1Q      Median          3Q         Max 
+## -2.03126650 -0.35710410  0.05785154  0.43662246  1.34601233 
+## 
+## 
+## Coefficients:
+##                      Estimate   Naive S.E.     Naive z  Robust S.E.   Robust z
+## (Intercept)      5.479453e+00 0.1464323258 37.41969377 0.1403852679 39.0315371
+## time             3.706259e-03 0.0006849590  5.41092107 0.0002259020 16.4064939
+## treatozone      -3.378012e-01 0.1771142997 -1.90724969 0.1688164000 -2.0009975
+## time:treatozone -8.026838e-05 0.0008284786 -0.09688649 0.0002644467 -0.3035333
+## 
+## Estimated Scale Parameter:  0.412159
+## Number of Iterations:  1
+## 
+## Working Correlation
+##      [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8]
+## [1,]    1    0    0    0    0    0    0    0
+## [2,]    0    1    0    0    0    0    0    0
+## [3,]    0    0    1    0    0    0    0    0
+## [4,]    0    0    0    1    0    0    0    0
+## [5,]    0    0    0    0    1    0    0    0
+## [6,]    0    0    0    0    0    1    0    0
+## [7,]    0    0    0    0    0    0    1    0
+## [8,]    0    0    0    0    0    0    0    1</code></pre>
+<p>E(y_ij) = β_0 + β_1(X_1) + β_2(X_2) + β_3(X_1)(X_2) where y_ij=size
+of the tree measured as log(height × diameter^2) X_1=treat{(0=control
+and 1=ozone) X_2=days after January 1st of the year</p>
+<ol start="2" style="list-style-type: decimal">
+<li>Try different working correlation structures (CS and AR(1)) for the
+GEEmodel. Which model yields the better QIC value? Show the SAS/R code
+and relevant output. [2 points] (For R users, use geepack package and
+geeglm, geepack::QIC functions)</li>
+</ol>
+<pre class="r"><code>library(geepack)
+
+# model with CS
+fit_cs =
+  geeglm(size ~ time * treat, 
+         data = hwdata4, 
+         id = tree,
+         family = gaussian, 
+         corstr = &quot;exchangeable&quot;)
+
+summary(fit_cs)</code></pre>
+<pre><code>## 
+## Call:
+## geeglm(formula = size ~ time * treat, family = gaussian, data = hwdata4, 
+##     id = tree, corstr = &quot;exchangeable&quot;)
+## 
+##  Coefficients:
+##                   Estimate    Std.err     Wald Pr(&gt;|W|)    
+## (Intercept)      5.479e+00  1.404e-01 1523.461   &lt;2e-16 ***
+## time             3.706e-03  2.259e-04  269.173   &lt;2e-16 ***
+## treatozone      -3.378e-01  1.688e-01    4.004   0.0454 *  
+## time:treatozone -8.027e-05  2.645e-04    0.092   0.7615    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Correlation structure = exchangeable 
+## Estimated Scale Parameters:
+## 
+##             Estimate Std.err
+## (Intercept)   0.4096   0.068
+##   Link = identity 
+## 
+## Estimated Correlation Parameters:
+##       Estimate  Std.err
+## alpha   0.9573 0.007712
+## Number of clusters:   79  Maximum cluster size: 8</code></pre>
+<pre class="r"><code># model with AR(1)
+fit_ar1 =
+  geeglm(size ~ time * treat,
+         data = hwdata4,
+         id = tree,
+         family = gaussian,
+         corstr = &quot;ar1&quot;)
+
+summary(fit_ar1)</code></pre>
+<pre><code>## 
+## Call:
+## geeglm(formula = size ~ time * treat, family = gaussian, data = hwdata4, 
+##     id = tree, corstr = &quot;ar1&quot;)
+## 
+##  Coefficients:
+##                  Estimate   Std.err    Wald Pr(&gt;|W|)    
+## (Intercept)      5.546989  0.142983 1505.04   &lt;2e-16 ***
+## time             0.003031  0.000204  220.51   &lt;2e-16 ***
+## treatozone      -0.322148  0.171361    3.53     0.06 .  
+## time:treatozone -0.000117  0.000243    0.23     0.63    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Correlation structure = ar1 
+## Estimated Scale Parameters:
+## 
+##             Estimate Std.err
+## (Intercept)    0.416  0.0681
+##   Link = identity 
+## 
+## Estimated Correlation Parameters:
+##       Estimate Std.err
+## alpha    0.985 0.00283
+## Number of clusters:   79  Maximum cluster size: 8</code></pre>
+<pre class="r"><code># extract QIC
+geepack::QIC(fit_cs)</code></pre>
+<pre><code>##       QIC      QICu Quasi Lik       CIC    params      QICC 
+##     289.0     266.8    -129.4      15.1       4.0     289.8</code></pre>
+<pre class="r"><code>geepack::QIC(fit_ar1)</code></pre>
+<pre><code>##       QIC      QICu Quasi Lik       CIC    params      QICC 
+##     294.1     270.8    -131.4      15.7       4.0     294.9</code></pre>
+<p>The CS correlation structure for the GEE model has a lower QIC value
+(289.8) compared to the AR(1) correlation structure (294.1), thus has a
+better fit since a smaller QIC value is preferred.</p>
+<ol start="3" style="list-style-type: decimal">
+<li>Use the model selected in (2) to test whether the trajectory of tree
+size over time is different between the two environments. Write down the
+hypothesis, test statistic, p-value, and conclusion.</li>
+</ol>
+<pre class="r"><code>fit_cs_2 = 
+  gee(size ~ time * treat, 
+      data = hwdata4, 
+      id = tree, 
+      family = gaussian,
+      corstr = &quot;exchangeable&quot;)</code></pre>
+<pre><code>## Beginning Cgee S-function, @(#) geeformula.q 4.13 98/01/27</code></pre>
+<pre><code>## running glm to get initial regression estimate</code></pre>
+<pre><code>##     (Intercept)            time      treatozone time:treatozone 
+##        5.48e+00        3.71e-03       -3.38e-01       -8.03e-05</code></pre>
+<pre class="r"><code>summary(fit_cs_2)</code></pre>
 <pre><code>## 
 ##  GEE:  GENERALIZED LINEAR MODELS FOR DEPENDENT DATA
 ##  gee S-function, version 4.13 modified 98/01/27 (1998) 
@@ -404,39 +546,79 @@ fit_1 =
 ##     family = gaussian, corstr = &quot;exchangeable&quot;)
 ## 
 ## Summary of Residuals:
-##         Min          1Q      Median          3Q         Max 
-## -2.03126650 -0.35710410  0.05785154  0.43662246  1.34601233 
+##     Min      1Q  Median      3Q     Max 
+## -2.0313 -0.3571  0.0579  0.4366  1.3460 
 ## 
 ## 
 ## Coefficients:
-##                      Estimate   Naive S.E.    Naive z  Robust S.E.   Robust z
-## (Intercept)      5.479453e+00 0.1293041927 42.3764510 0.1403852679 39.0315371
-## time             3.706259e-03 0.0001485844 24.9437976 0.0002259020 16.4064939
-## treatozone      -3.378012e-01 0.1563973078 -2.1598914 0.1688164000 -2.0009975
-## time:treatozone -8.026838e-05 0.0001797173 -0.4466369 0.0002644467 -0.3035333
+##                  Estimate Naive S.E. Naive z Robust S.E. Robust z
+## (Intercept)      5.48e+00   0.129304  42.376    0.140385   39.032
+## time             3.71e-03   0.000149  24.944    0.000226   16.406
+## treatozone      -3.38e-01   0.156397  -2.160    0.168816   -2.001
+## time:treatozone -8.03e-05   0.000180  -0.447    0.000264   -0.304
 ## 
-## Estimated Scale Parameter:  0.412159
+## Estimated Scale Parameter:  0.412
 ## Number of Iterations:  1
 ## 
 ## Working Correlation
-##           [,1]      [,2]      [,3]      [,4]      [,5]      [,6]      [,7]
-## [1,] 1.0000000 0.9529438 0.9529438 0.9529438 0.9529438 0.9529438 0.9529438
-## [2,] 0.9529438 1.0000000 0.9529438 0.9529438 0.9529438 0.9529438 0.9529438
-## [3,] 0.9529438 0.9529438 1.0000000 0.9529438 0.9529438 0.9529438 0.9529438
-## [4,] 0.9529438 0.9529438 0.9529438 1.0000000 0.9529438 0.9529438 0.9529438
-## [5,] 0.9529438 0.9529438 0.9529438 0.9529438 1.0000000 0.9529438 0.9529438
-## [6,] 0.9529438 0.9529438 0.9529438 0.9529438 0.9529438 1.0000000 0.9529438
-## [7,] 0.9529438 0.9529438 0.9529438 0.9529438 0.9529438 0.9529438 1.0000000
-## [8,] 0.9529438 0.9529438 0.9529438 0.9529438 0.9529438 0.9529438 0.9529438
-##           [,8]
-## [1,] 0.9529438
-## [2,] 0.9529438
-## [3,] 0.9529438
-## [4,] 0.9529438
-## [5,] 0.9529438
-## [6,] 0.9529438
-## [7,] 0.9529438
-## [8,] 1.0000000</code></pre>
+##       [,1]  [,2]  [,3]  [,4]  [,5]  [,6]  [,7]  [,8]
+## [1,] 1.000 0.953 0.953 0.953 0.953 0.953 0.953 0.953
+## [2,] 0.953 1.000 0.953 0.953 0.953 0.953 0.953 0.953
+## [3,] 0.953 0.953 1.000 0.953 0.953 0.953 0.953 0.953
+## [4,] 0.953 0.953 0.953 1.000 0.953 0.953 0.953 0.953
+## [5,] 0.953 0.953 0.953 0.953 1.000 0.953 0.953 0.953
+## [6,] 0.953 0.953 0.953 0.953 0.953 1.000 0.953 0.953
+## [7,] 0.953 0.953 0.953 0.953 0.953 0.953 1.000 0.953
+## [8,] 0.953 0.953 0.953 0.953 0.953 0.953 0.953 1.000</code></pre>
+<pre class="r"><code># Wald test p-values
+1- pchisq(fit_cs_2$coefficients^2/
+diag(fit_cs_2$robust.variance),df=1)</code></pre>
+<pre><code>##     (Intercept)            time      treatozone time:treatozone 
+##          0.0000          0.0000          0.0454          0.7615</code></pre>
+<p>We fail to reject H_0 at α=0.05. There is insufficient evidence to
+conclude that the trajectory of tree size over time is different between
+the ozone and control environments.</p>
+<ol start="4" style="list-style-type: decimal">
+<li>Use the model selected in (2) to estimate the mean tree size change
+from day100 to day 200 after January 1st for trees grown in ozone
+environment and those grown in ozone-free environment, respectively</li>
+</ol>
+<pre class="r"><code># Calculate predicted mean tree size for day 100 and day 200 separately for ozone and control environments
+day_100_ozone &lt;- predict(fit_cs, newdata = data.frame(time = 100, treat = &quot;ozone&quot;), type = &quot;response&quot;)
+day_200_ozone &lt;- predict(fit_cs, newdata = data.frame(time = 200, treat = &quot;ozone&quot;), type = &quot;response&quot;)
+
+day_100_control &lt;- predict(fit_cs, newdata = data.frame(time = 100, treat = &quot;control&quot;), type = &quot;response&quot;)
+day_200_control &lt;- predict(fit_cs, newdata = data.frame(time = 200, treat = &quot;control&quot;), type = &quot;response&quot;)
+
+# Compute mean tree size change from day 100 to day 200 for each environment
+mean_change_ozone &lt;- day_200_ozone - day_100_ozone
+mean_change_control &lt;- day_200_control - day_100_control
+
+# Print the estimated mean tree size change
+print(&quot;Estimated Mean Tree Size Change from Day 100 to Day 200:&quot;)</code></pre>
+<pre><code>## [1] &quot;Estimated Mean Tree Size Change from Day 100 to Day 200:&quot;</code></pre>
+<pre class="r"><code>print(paste(&quot;Ozone Environment:&quot;, mean_change_ozone))</code></pre>
+<pre><code>## [1] &quot;Ozone Environment: 0.362599095773301&quot;</code></pre>
+<pre class="r"><code>print(paste(&quot;Control Environment:&quot;, mean_change_control))</code></pre>
+<pre><code>## [1] &quot;Control Environment: 0.370625933778227&quot;</code></pre>
+<p>The mean tree size change from day 100 to day 200 after January 1st
+for trees grown in ozone environment is 0.363 log(height x
+〖diameter〗^2). The mean tree size change from day100 to day 200 after
+January 1st for trees grown in ozone-free environment is 0.371
+log(height x 〖diameter〗^2).</p>
+<ol start="5" style="list-style-type: decimal">
+<li>Calculate the difference of the two estimates in (4). Denote the
+difference asDIFF. Which β coefficient is DIFF related to? Interpret
+this β coefficient. [3 points]</li>
+</ol>
+<pre class="r"><code>DIFF = mean_change_ozone - mean_change_control
+DIFF</code></pre>
+<pre><code>##        1 
+## -0.00803</code></pre>
+<p>DIFF is related to the β coefficient interaction time*treat
+(β_3=0.0000803). Compared to the control, trees in an ozone environment
+of 70ppb have a 0.00803% reduction in the effect of time on tree
+size.</p>
 </div>
 
 
