@@ -1,0 +1,39 @@
+---
+title: "hw8"
+author: "Camille Okonkwo"
+date: "2024-04-06"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+```
+
+# Import Data and Preparation
+```{r}
+hwdata4 = read_csv("data/hwdata4.csv")
+
+# data prep
+hwdata4$treat = as.factor(hwdata4$treat)
+hwdata4$tree = as.factor(hwdata4$tree)
+```
+
+
+1.	Fit a GEE model with size of the tree as outcome and time, environment, and their interaction as covariates. Write down the mean response of the GEE model.
+```{r}
+# fit the model with CS correlation matrix
+library(gee)
+
+fit_1 = 
+  gee(size ~ time * treat, 
+      data = hwdata4, 
+      id = tree, 
+      family = gaussian, 
+      corstr = "exchangeable")
+
+summary(fit_1)
+
+```
+
